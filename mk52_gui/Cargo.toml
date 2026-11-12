@@ -1,0 +1,11 @@
+[package]
+name = "mk52-gui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# GPUI Kit (gpui-kit.com) — современный нативный UI-фреймворк на Rust.
+# Feature `gpui-fast` подключается через локальную копию crate (vendor/),
+# т.к. в опубликованной на crates.io версии 0.7 эта опция отсутствует.
+gpui-kit = { path = "vendor/gpui-kit", features = ["gpui-fast"] }
+mk52_core = { path = "../mk52_core" }

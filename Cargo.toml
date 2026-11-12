@@ -1,0 +1,3 @@
+[workspace]
+resolver = "3"
+members = ["mk52_core", "mk52_gui"]

@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core:
+    name: Core (fmt, clippy, test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Format check
+        run: cargo fmt --all -- --check
+      - name: Clippy core
+        run: cargo clippy -p mk52_core --all-targets -- -D warnings
+      - name: Test core
+        run: cargo test -p mk52_core
+
+  gui:
+    name: GUI (clippy, check)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Install GUI system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfontconfig1-dev libfreetype-dev libwayland-dev \
+            libxkbcommon-dev libxcb1-dev libx11-xcb-dev libasound2-dev
+      - name: Clippy GUI
+        run: cargo clippy -p mk52-gui -- -D warnings
+      - name: Check GUI
+        run: cargo check -p mk52-gui
